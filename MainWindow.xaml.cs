@@ -29,13 +29,11 @@ namespace ShutdownTimer
 
         private void InitializeTimeSelectors()
         {
-            // Часы: от 0 до 23
             for (int i = 0; i <= 23; i++)
             {
                 HoursBox.Items.Add(i.ToString("00"));
             }
 
-            // Минуты и секунды: от 0 до 59
             for (int i = 0; i <= 59; i++)
             {
                 MinutesBox.Items.Add(i.ToString("00"));
@@ -67,7 +65,6 @@ namespace ShutdownTimer
                 return;
             }
 
-            // Исходный рабочий способ установки таймера.
             string command = $"/c shutdown -s -t {totalSeconds}";
 
             if (!ExecuteCommand(command))
@@ -89,11 +86,8 @@ namespace ShutdownTimer
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Исходный рабочий способ отмены таймера.
             string command = "/c shutdown /a";
 
-            // При отмене не показываем системное сообщение Windows,
-            // если таймер уже был выключен.
             ExecuteCommand(command, false);
 
             countdownTimer.Stop();

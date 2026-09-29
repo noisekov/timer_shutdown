@@ -9,11 +9,6 @@
         Background="#17181C">
 
     <Window.Resources>
-
-        <!-- ===================================================== -->
-        <!-- COMBOBOX -->
-        <!-- ===================================================== -->
-
         <Style x:Key="TimeComboBoxStyle"
                TargetType="{x:Type ComboBox}">
 
@@ -29,7 +24,6 @@
 
                         <Grid>
 
-                            <!-- Основное поле -->
                             <Border x:Name="MainBorder"
                                     Background="#25272D"
                                     BorderBrush="#555A66"
@@ -38,7 +32,6 @@
 
                                 <Grid>
 
-                                    <!-- Выбранное значение -->
                                     <ContentPresenter
                                         Margin="10,0,40,0"
                                         HorizontalAlignment="Center"
@@ -48,7 +41,6 @@
                                         TextElement.Foreground="White"
                                         TextElement.FontSize="22"/>
 
-                                    <!-- Стрелка -->
                                     <Path
                                         Data="M 0 0 L 8 8 L 16 0"
                                         Stroke="White"
@@ -62,7 +54,6 @@
                             </Border>
 
 
-                            <!-- Область открытия списка -->
                             <ToggleButton
                                 Focusable="False"
                                 Background="Transparent"
@@ -96,7 +87,6 @@
                             </ToggleButton>
 
 
-                            <!-- Выпадающий список -->
                             <Popup x:Name="PART_Popup"
                                    Placement="Bottom"
                                    AllowsTransparency="True"
@@ -124,7 +114,6 @@
                         </Grid>
 
 
-                        <!-- Hover ComboBox -->
                         <ControlTemplate.Triggers>
 
                             <Trigger Property="IsMouseOver" Value="True">
@@ -140,7 +129,6 @@
                             </Trigger>
 
 
-                            <!-- Открытый ComboBox -->
                             <Trigger Property="IsDropDownOpen" Value="True">
 
                                 <Setter TargetName="MainBorder"
@@ -161,11 +149,6 @@
             </Setter>
 
         </Style>
-
-
-        <!-- ===================================================== -->
-        <!-- ЭЛЕМЕНТЫ ВЫПАДАЮЩЕГО СПИСКА -->
-        <!-- ===================================================== -->
 
         <Style TargetType="{x:Type ComboBoxItem}">
 
@@ -195,7 +178,6 @@
 
                         <ControlTemplate.Triggers>
 
-                            <!-- Мягкий hover -->
                             <Trigger Property="IsMouseOver" Value="True">
 
                                 <Setter TargetName="ItemBorder"
@@ -204,7 +186,6 @@
 
                             </Trigger>
 
-                            <!-- Выбранный пункт -->
                             <Trigger Property="IsSelected" Value="True">
 
                                 <Setter TargetName="ItemBorder"
@@ -222,11 +203,6 @@
             </Setter>
 
         </Style>
-
-
-        <!-- ===================================================== -->
-        <!-- СИНЯЯ КНОПКА -->
-        <!-- ===================================================== -->
 
         <Style x:Key="StartButtonStyle"
                TargetType="{x:Type Button}">
@@ -292,11 +268,6 @@
 
         </Style>
 
-
-        <!-- ===================================================== -->
-        <!-- КРАСНАЯ КНОПКА -->
-        <!-- ===================================================== -->
-
         <Style x:Key="CancelButtonStyle"
                TargetType="{x:Type Button}">
 
@@ -355,11 +326,6 @@
 
     </Window.Resources>
 
-
-    <!-- ========================================================= -->
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <!-- ========================================================= -->
-
     <Grid Margin="25">
 
         <Grid.RowDefinitions>
@@ -369,8 +335,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <!-- Заголовок -->
 
         <StackPanel Grid.Row="0"
                     HorizontalAlignment="Center"
@@ -393,14 +357,9 @@
         </StackPanel>
 
 
-        <!-- Выбор времени -->
-
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
-
-
-            <!-- Часы -->
 
             <StackPanel Margin="0,0,8,0">
 
@@ -430,8 +389,6 @@
                 Margin="0,0,8,12"/>
 
 
-            <!-- Минуты -->
-
             <StackPanel Margin="0,0,8,0">
 
                 <TextBlock
@@ -459,9 +416,6 @@
                 VerticalAlignment="Bottom"
                 Margin="0,0,8,12"/>
 
-
-            <!-- Секунды -->
-
             <StackPanel>
 
                 <TextBlock
@@ -483,8 +437,6 @@
 
         </StackPanel>
 
-
-        <!-- Кнопки -->
 
         <Grid Grid.Row="2"
               Margin="0,25,0,0">
@@ -522,8 +474,6 @@
 
         </Grid>
 
-
-        <!-- Обратный отсчёт -->
 
         <StackPanel
             Grid.Row="3"
