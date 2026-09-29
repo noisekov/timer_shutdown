@@ -8,26 +8,24 @@
     "net10.0-windows": []
   },
   "packageFolders": {
-    "C:\\Users\\B100016\\.nuget\\packages\\": {}
+    "C:\\Users\\volod\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\B100016\\source\\repos\\shutDown\\shutDown\\shutDown.csproj",
+      "projectUniqueName": "D:\\work\\timer_shutdown\\shutDown.csproj",
       "projectName": "shutDown",
-      "projectPath": "C:\\Users\\B100016\\source\\repos\\shutDown\\shutDown\\shutDown.csproj",
-      "packagesPath": "C:\\Users\\B100016\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\B100016\\source\\repos\\shutDown\\shutDown\\obj\\",
+      "projectPath": "D:\\work\\timer_shutdown\\shutDown.csproj",
+      "packagesPath": "C:\\Users\\volod\\.nuget\\packages\\",
+      "outputPath": "D:\\work\\timer_shutdown\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\B100016\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\volod\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -47,7 +45,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0-windows": {
@@ -72,7 +70,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
