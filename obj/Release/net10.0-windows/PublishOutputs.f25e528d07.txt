@@ -1,0 +1,5 @@
+D:\work\timer_shutdown\deploy\shutDown.exe
+D:\work\timer_shutdown\deploy\shutDown.dll
+D:\work\timer_shutdown\deploy\shutDown.deps.json
+D:\work\timer_shutdown\deploy\shutDown.runtimeconfig.json
+D:\work\timer_shutdown\deploy\shutDown.pdb

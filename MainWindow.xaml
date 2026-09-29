@@ -1,30 +1,553 @@
 ﻿<Window x:Class="ShutdownTimer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Таймер выключения" Height="200" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Margin="15">
+        Title="Таймер выключения"
+        Height="390"
+        Width="520"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#17181C">
+
+    <Window.Resources>
+
+        <!-- ===================================================== -->
+        <!-- COMBOBOX -->
+        <!-- ===================================================== -->
+
+        <Style x:Key="TimeComboBoxStyle"
+               TargetType="{x:Type ComboBox}">
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#25272D"/>
+            <Setter Property="BorderBrush" Value="#555A66"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+
+                        <Grid>
+
+                            <!-- Основное поле -->
+                            <Border x:Name="MainBorder"
+                                    Background="#25272D"
+                                    BorderBrush="#555A66"
+                                    BorderThickness="1"
+                                    CornerRadius="6">
+
+                                <Grid>
+
+                                    <!-- Выбранное значение -->
+                                    <ContentPresenter
+                                        Margin="10,0,40,0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Content="{TemplateBinding SelectionBoxItem}"
+                                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                        TextElement.Foreground="White"
+                                        TextElement.FontSize="22"/>
+
+                                    <!-- Стрелка -->
+                                    <Path
+                                        Data="M 0 0 L 8 8 L 16 0"
+                                        Stroke="White"
+                                        StrokeThickness="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,14,0"/>
+
+                                </Grid>
+
+                            </Border>
+
+
+                            <!-- Область открытия списка -->
+                            <ToggleButton
+                                Focusable="False"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsChecked="{Binding IsDropDownOpen,
+                                    RelativeSource={RelativeSource TemplatedParent},
+                                    Mode=TwoWay}">
+
+                                <ToggleButton.Template>
+
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+
+                                        <Grid Background="Transparent">
+
+                                            <Path
+                                                Data="M 0 0 L 8 8 L 16 0"
+                                                Stroke="Transparent"
+                                                StrokeThickness="0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Margin="0,0,14,0"/>
+
+                                        </Grid>
+
+                                    </ControlTemplate>
+
+                                </ToggleButton.Template>
+
+                            </ToggleButton>
+
+
+                            <!-- Выпадающий список -->
+                            <Popup x:Name="PART_Popup"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   PopupAnimation="Slide">
+
+                                <Border
+                                    Background="#25272D"
+                                    BorderBrush="#555A66"
+                                    BorderThickness="1"
+                                    Width="{Binding ActualWidth,
+                                        RelativeSource={RelativeSource TemplatedParent}}">
+
+                                    <ScrollViewer MaxHeight="250">
+
+                                        <ItemsPresenter/>
+
+                                    </ScrollViewer>
+
+                                </Border>
+
+                            </Popup>
+
+                        </Grid>
+
+
+                        <!-- Hover ComboBox -->
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+
+                                <Setter TargetName="MainBorder"
+                                        Property="Background"
+                                        Value="#30343D"/>
+
+                                <Setter TargetName="MainBorder"
+                                        Property="BorderBrush"
+                                        Value="#7C8799"/>
+
+                            </Trigger>
+
+
+                            <!-- Открытый ComboBox -->
+                            <Trigger Property="IsDropDownOpen" Value="True">
+
+                                <Setter TargetName="MainBorder"
+                                        Property="Background"
+                                        Value="#30343D"/>
+
+                                <Setter TargetName="MainBorder"
+                                        Property="BorderBrush"
+                                        Value="#60A5FA"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+
+        <!-- ===================================================== -->
+        <!-- ЭЛЕМЕНТЫ ВЫПАДАЮЩЕГО СПИСКА -->
+        <!-- ===================================================== -->
+
+        <Style TargetType="{x:Type ComboBoxItem}">
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#25272D"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,6"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+
+                        <Border x:Name="ItemBorder"
+                                Background="#25272D"
+                                Padding="{TemplateBinding Padding}">
+
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                TextElement.Foreground="White"/>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- Мягкий hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+
+                                <Setter TargetName="ItemBorder"
+                                        Property="Background"
+                                        Value="#30343D"/>
+
+                            </Trigger>
+
+                            <!-- Выбранный пункт -->
+                            <Trigger Property="IsSelected" Value="True">
+
+                                <Setter TargetName="ItemBorder"
+                                        Property="Background"
+                                        Value="#344766"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+        <!-- ===================================================== -->
+        <!-- СИНЯЯ КНОПКА -->
+        <!-- ===================================================== -->
+
+        <Style x:Key="StartButtonStyle"
+               TargetType="{x:Type Button}">
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}"
+                                TextElement.Foreground="White"
+                                TextElement.FontSize="15"
+                                TextElement.FontWeight="Bold"/>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#3B82F6"/>
+
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#1D4ED8"/>
+
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Opacity"
+                                        Value="0.55"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+        <!-- ===================================================== -->
+        <!-- КРАСНАЯ КНОПКА -->
+        <!-- ===================================================== -->
+
+        <Style x:Key="CancelButtonStyle"
+               TargetType="{x:Type Button}">
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}"
+                                TextElement.Foreground="White"
+                                TextElement.FontSize="15"
+                                TextElement.FontWeight="Bold"/>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#EF4444"/>
+
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#B91C1C"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
+
+    <!-- ========================================================= -->
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <!-- ========================================================= -->
+
+    <Grid Margin="25">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="Часы:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Name="HoursBox" Width="50" Text="0" TextAlignment="Center" VerticalAlignment="Center"/>
 
-            <TextBlock Text="Минуты:" VerticalAlignment="Center" Margin="15,0,5,0"/>
-            <TextBox Name="MinutesBox" Width="50" Text="0" TextAlignment="Center" VerticalAlignment="Center"/>
+        <!-- Заголовок -->
 
-            <TextBlock Text="Секунды:" VerticalAlignment="Center" Margin="15,0,5,0"/>
-            <TextBox Name="SecondsBox" Width="50" Text="0" TextAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,25">
+
+            <TextBlock
+                Text="Таймер выключения"
+                Foreground="White"
+                FontSize="25"
+                FontWeight="SemiBold"
+                HorizontalAlignment="Center"/>
+
+            <TextBlock
+                Text="Выберите время до выключения компьютера"
+                Foreground="#A7A9B2"
+                FontSize="13"
+                HorizontalAlignment="Center"
+                Margin="0,6,0,0"/>
+
         </StackPanel>
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,0,0,15">
-            <Button Name="ApplyBtn" Content="Применить таймер" Width="150" Height="30" Margin="0,0,10,0" Click="ApplyBtn_Click" Background="#FF4CAF50" Foreground="White" FontWeight="Bold"/>
-            <Button Name="CancelBtn" Content="Отменить таймер" Width="150" Height="30" Click="CancelBtn_Click" Background="#FFF44336" Foreground="White" FontWeight="Bold"/>
+
+
+        <!-- Выбор времени -->
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+
+
+            <!-- Часы -->
+
+            <StackPanel Margin="0,0,8,0">
+
+                <TextBlock
+                    Text="Часы"
+                    Foreground="#C5C7CE"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,6"/>
+
+                <ComboBox
+                    x:Name="HoursBox"
+                    Style="{StaticResource TimeComboBoxStyle}"
+                    Width="100"
+                    Height="55"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
+            </StackPanel>
+
+
+            <TextBlock
+                Text=":"
+                Foreground="#A7A9B2"
+                FontSize="24"
+                VerticalAlignment="Bottom"
+                Margin="0,0,8,12"/>
+
+
+            <!-- Минуты -->
+
+            <StackPanel Margin="0,0,8,0">
+
+                <TextBlock
+                    Text="Минуты"
+                    Foreground="#C5C7CE"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,6"/>
+
+                <ComboBox
+                    x:Name="MinutesBox"
+                    Style="{StaticResource TimeComboBoxStyle}"
+                    Width="100"
+                    Height="55"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
+            </StackPanel>
+
+
+            <TextBlock
+                Text=":"
+                Foreground="#A7A9B2"
+                FontSize="24"
+                VerticalAlignment="Bottom"
+                Margin="0,0,8,12"/>
+
+
+            <!-- Секунды -->
+
+            <StackPanel>
+
+                <TextBlock
+                    Text="Секунды"
+                    Foreground="#C5C7CE"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,6"/>
+
+                <ComboBox
+                    x:Name="SecondsBox"
+                    Style="{StaticResource TimeComboBoxStyle}"
+                    Width="100"
+                    Height="55"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
+            </StackPanel>
+
         </StackPanel>
 
-        <TextBlock Name="StatusText" Grid.Row="2" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14"/>
+
+        <!-- Кнопки -->
+
+        <Grid Grid.Row="2"
+              Margin="0,25,0,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Button
+                x:Name="ApplyBtn"
+                Grid.Column="0"
+                Content="Запустить таймер"
+                Height="48"
+                Margin="0,0,6,0"
+                Background="#2563EB"
+                Foreground="White"
+                BorderThickness="0"
+                Style="{StaticResource StartButtonStyle}"
+                Click="ApplyBtn_Click"/>
+
+
+            <Button
+                x:Name="CancelBtn"
+                Grid.Column="1"
+                Content="Отменить"
+                Height="48"
+                Margin="6,0,0,0"
+                Background="#DC2626"
+                Foreground="White"
+                BorderThickness="0"
+                Style="{StaticResource CancelButtonStyle}"
+                Click="CancelBtn_Click"/>
+
+        </Grid>
+
+
+        <!-- Обратный отсчёт -->
+
+        <StackPanel
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+
+            <TextBlock
+                x:Name="StatusText"
+                Text="Таймер не установлен"
+                Foreground="#A7A9B2"
+                FontSize="13"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,8"/>
+
+            <TextBlock
+                x:Name="CountdownText"
+                Text="00:00:00"
+                Foreground="White"
+                FontSize="42"
+                FontWeight="SemiBold"
+                HorizontalAlignment="Center"/>
+
+        </StackPanel>
+
     </Grid>
+
 </Window>
